@@ -1,5 +1,10 @@
+import {join} from 'path';
+
 export {config} from './config';
 import * as Discord from 'discord.js';
+import * as Database from 'better-sqlite3';
+
+export const db = new Database(join(__dirname, '..', 'settings.sqlite3'));
 
 export const genEmbed = (title: string, desc: string): Discord.MessageEmbed => new Discord.MessageEmbed()
 	.setTitle(title)

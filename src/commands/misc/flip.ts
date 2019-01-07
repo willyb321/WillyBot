@@ -4,7 +4,7 @@
 /**
  * ignore
  */
-import {genEmbed} from '../utils';
+import {genEmbed} from '../../utils';
 import * as Commando from 'discord.js-commando';
 
 /**

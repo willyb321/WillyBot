@@ -7,9 +7,8 @@
 // Import modules
 import 'source-map-support/register';
 import * as Commando from 'discord.js-commando';
-import {config} from './utils';
+import {config, db} from './utils';
 import {join} from 'path';
-import * as sqlite from 'sqlite';
 import {oneLine} from 'common-tags';
 
 process.on('uncaughtException', (err: Error) => {
@@ -31,7 +30,8 @@ client
 	.on('error', console.error)
 	.on(
 		'debug',
-		process.env.NODE_ENV === 'development' ? console.info : () => {}
+		process.env.NODE_ENV === 'development' ? console.info : () => {
+		}
 	)
 	.on('warn', console.warn)
 	.on('disconnect', () => console.warn('Disconnected!'))
@@ -92,12 +92,10 @@ client
 		}
 	);
 
+
 client
 	.setProvider(
-		sqlite
-			.open(join(__dirname, 'settings.sqlite3'))
-			.then(db => new Commando.SQLiteProvider(db))
-	)
+		new Commando.SyncSQLiteProvider(db))
 	.catch((err: Error) => {
 		console.error(err);
 	});
@@ -108,7 +106,7 @@ client.on('ready', () => {
 	console.log(
 		`Client ready; logged in as ${client.user.username}#${
 			client.user.discriminator
-		} (${client.user.id})`
+			} (${client.user.id})`
 	);
 	client.user
 		.setActivity('Some sort of bot-like activity')
@@ -123,6 +121,7 @@ client.registry
 	.registerDefaults()
 	.registerCommandsIn(join(__dirname, 'commands'))
 	.registerCommandsIn(join(__dirname, 'commands', 'admin'))
+	.registerCommandsIn(join(__dirname, 'commands', 'misc'));
 
 // Log our bot in
 client.login(config.token).catch((err: Error) => {

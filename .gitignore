@@ -167,3 +167,4 @@ typings/
 
 dist/
 config.json
+settings.sqlite3

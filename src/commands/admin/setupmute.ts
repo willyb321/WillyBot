@@ -58,10 +58,14 @@ export class SetupMuteCommand extends Commando.Command {
 				try {
 					await chan.createOverwrite(muteRole, {
 						SEND_MESSAGES: false,
+						CREATE_INSTANT_INVITE: false,
+						KICK_MEMBERS: false,
+						BAN_MEMBERS: false,
 						SEND_TTS_MESSAGES: false,
 						CHANGE_NICKNAME: false,
 						ADD_REACTIONS: false,
-
+						EMBED_LINKS: false,
+						CONNECT: false,
 						USE_EXTERNAL_EMOJIS: false,
 						ATTACH_FILES: false,
 						READ_MESSAGE_HISTORY: true
