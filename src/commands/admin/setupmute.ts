@@ -12,7 +12,7 @@ export class SetupMuteCommand extends Commando.Command {
 	constructor(client) {
 		super(client, {
 			name: 'setmute',
-			group: 'misc',
+			group: 'admin',
 			memberName: 'setmute',
 			description: 'Set up a mute role and permissions.',
 			details: 'Set up a mute role and permissions.',
@@ -26,7 +26,8 @@ export class SetupMuteCommand extends Commando.Command {
 	}
 
 	async run(message: Commando.CommandoMessage) {
-		const muteRoleId = message.guild.settings.get('muteRole', '');
+		const muteRoleId = await message.guild.settings.get('muteRole', '');
+		console.log(muteRoleId)
 		const perms = new Permissions();
 		let muteRole = message.guild.roles.get(muteRoleId);
 		const botPosition = message.guild.roles.highest.position;
