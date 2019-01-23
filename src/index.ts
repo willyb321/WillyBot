@@ -10,6 +10,7 @@ import * as Commando from 'discord.js-commando';
 import {config, db} from './utils';
 import {join} from 'path';
 import {oneLine} from 'common-tags';
+import { TextChannel } from 'discord.js';
 
 process.on('uncaughtException', (err: Error) => {
 	console.error(err);
@@ -118,13 +119,60 @@ client.on('ready', () => {
 client.registry
 	.registerGroup('misc', 'Misc')
 	.registerGroup('admin', 'Admin')
+	.registerGroup('elite', 'Elite')
 	.registerDefaults()
 	.registerCommandsIn(join(__dirname, 'commands'))
 	.registerCommandsIn(join(__dirname, 'commands', 'admin'))
+	.registerCommandsIn(join(__dirname, 'commands', 'elite'))
 	.registerCommandsIn(join(__dirname, 'commands', 'misc'));
 
 // Log our bot in
 client.login(config.token).catch((err: Error) => {
 	console.error(err);
 	process.exit(1);
+});
+
+
+client.on('guildMemberAdd',member => {
+	console.log(`Welcome to ${member.guild.name}, ${member.user.tag}`);
+	if (!client.provider.get(member.guild, 'botSpamJoin', false)) {
+		return;
+	}
+	let msg = client.provider.get(member.guild, 'botSpamJoinMsg', '$USER joined $SERVER');
+	msg = msg.replace('$USER', member.toString());
+	msg = msg.replace('$SERVER', member.guild.name);
+	const channel = client.provider.get(member.guild, 'botSpam');
+	const lookup = client.provider.get(member.guild, 'botSpamInara', false);
+	if (channel) {
+		const chan = member.guild.channels.get(channel) as TextChannel;
+		if (chan) {
+			chan.send(msg, {disableEveryone: true});
+			if (!lookup) {
+				return;
+			}
+			// return getCmdrInfoFromInara(member.displayName).then(embeddedObject => {
+			// 	if (embeddedObject instanceof Commando.FriendlyError) {
+			// 		return chan.send(embeddedObject.message);
+			// 	}
+			// 	return chan.send({embed: embeddedObject});
+			// });
+		}
+	}
+});
+
+client.on('guildMemberRemove',member => {
+	console.log(`\`${member.user.tag}\` left ${member.guild.name}`);
+	if (!client.provider.get(member.guild, 'botSpamLeave', false)) {
+		return;
+	}
+	let msg = client.provider.get(member.guild, 'botSpamLeaveMsg', '$USER left $SERVER');
+	msg = msg.replace('$USER', member.user.tag);
+	msg = msg.replace('$SERVER', member.guild.name);
+	const channel = client.provider.get(member.guild, 'botSpam');
+	if (channel) {
+		const chan = member.guild.channels.get(channel) as TextChannel;
+		if (chan) {
+			return chan.send(msg, {disableEveryone: true});
+		}
+	}
 });
