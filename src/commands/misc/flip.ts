@@ -7,12 +7,6 @@
 import {genEmbed} from '../../utils';
 import * as Commando from 'discord.js-commando';
 
-/**
- * Coin flip
- */
-const flip = (): string =>
-	Math.floor(Math.random() * 2) == 0 ? 'heads' : 'tails';
-
 export class FlipCommand extends Commando.Command {
 	constructor(client: Commando.Client) {
 		super(client, {
@@ -31,7 +25,7 @@ export class FlipCommand extends Commando.Command {
 	}
 
 	async run(msg: Commando.CommandoMessage) {
-		const flipped = flip();
+		const flipped = Math.floor(Math.random() * 2) == 0 ? 'heads' : 'tails';
 		console.log(`Coin flipped by ${msg.author.tag}: ${flipped}`);
 		const embed = genEmbed('Coin Flipped', `Result: ${flipped}`);
 		embed.addField('By:', msg.author.toString());

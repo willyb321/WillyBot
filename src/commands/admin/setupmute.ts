@@ -22,7 +22,7 @@ export class SetupMuteCommand extends Commando.Command {
 	}
 
 	hasPermission(message: Commando.CommandoMessage) {
-		return message.client.isOwner(message.author);
+		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 
 	async run(message: Commando.CommandoMessage) {

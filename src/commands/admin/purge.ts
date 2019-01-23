@@ -6,6 +6,7 @@
  */
 import {config} from '../../utils';
 import * as Commando from 'discord.js-commando';
+import { Permissions } from 'discord.js';
 import {client} from '../../index';
 
 
@@ -24,15 +25,15 @@ export class PurgeCommand extends Commando.Command {
 					key: 'amount',
 					prompt: 'How many messages to purge?',
 					type: 'integer',
-					validate: val => parseInt(val) >= 1 && parseInt(val) < 25
+					validate: (val: string) => parseInt(val) >= 1 && parseInt(val) < 25
 				}
 			]
 		});
 	}
-	hasPermission(message) {
-		return client.isOwner(message.author)
+	hasPermission(message: Commando.CommandoMessage) {
+		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
-	async run(message, args) {
+	async run(message: Commando.CommandoMessage, args) {
 
 		let limit = args.amount;
 		if (!limit) {
