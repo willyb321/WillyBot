@@ -1,3 +1,4 @@
+import {CommandoGuild} from 'discord.js-commando';
 /**
  * @module Index
  */
@@ -10,7 +11,7 @@ import * as Commando from 'discord.js-commando';
 import {config, db} from './utils';
 import {join} from 'path';
 import {oneLine} from 'common-tags';
-import { TextChannel } from 'discord.js';
+import {TextChannel, Guild} from 'discord.js';
 
 process.on('uncaughtException', (err: Error) => {
 	console.error(err);
@@ -31,8 +32,7 @@ client
 	.on('error', console.error)
 	.on(
 		'debug',
-		process.env.NODE_ENV === 'development' ? console.info : () => {
-		}
+		process.env.NODE_ENV === 'development' ? console.info : () => {}
 	)
 	.on('warn', console.warn)
 	.on('disconnect', () => console.warn('Disconnected!'))
@@ -93,13 +93,9 @@ client
 		}
 	);
 
-
-client
-	.setProvider(
-		new Commando.SyncSQLiteProvider(db))
-	.catch((err: Error) => {
-		console.error(err);
-	});
+client.setProvider(new Commando.SyncSQLiteProvider(db)).catch((err: Error) => {
+	console.error(err);
+});
 
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
@@ -107,7 +103,7 @@ client.on('ready', () => {
 	console.log(
 		`Client ready; logged in as ${client.user.username}#${
 			client.user.discriminator
-			} (${client.user.id})`
+		} (${client.user.id})`
 	);
 	client.user
 		.setActivity('Some sort of bot-like activity')
@@ -132,43 +128,56 @@ client.login(config.token).catch((err: Error) => {
 	process.exit(1);
 });
 
-
-client.on('guildMemberAdd',member => {
+client.on('guildMemberAdd', member => {
 	console.log(`Welcome to ${member.guild.name}, ${member.user.tag}`);
-	if (!client.provider.get(member.guild, 'botSpamJoin', false)) {
+	const guild: any = member.guild;
+	const logChannelID = guild.settings.get('botLogChannelID', '');
+	const channel = guild.channels.get(logChannelID) as TextChannel;
+	if (!logChannelID || !channel) {
 		return;
 	}
-	let msg = client.provider.get(member.guild, 'botSpamJoinMsg', '$USER joined $SERVER');
+	if (!client.provider.get(member.guild, 'logJoins', false)) {
+		return;
+	}
+	let msg = client.provider.get(
+		member.guild,
+		'logJoinsMsg',
+		'$USER joined $SERVER'
+	);
 	msg = msg.replace('$USER', member.toString());
 	msg = msg.replace('$SERVER', member.guild.name);
-	const channel = client.provider.get(member.guild, 'botSpam');
+	msg = msg.replace('$ID', member.id);
+	msg = msg.replace('$TAG', member.user.tag);
 	const lookup = client.provider.get(member.guild, 'botSpamInara', false);
 	if (channel) {
-		const chan = member.guild.channels.get(channel) as TextChannel;
-		if (chan) {
-			chan.send(msg, {disableEveryone: true});
-			if (!lookup) {
-				return;
-			}
-			// return getCmdrInfoFromInara(member.displayName).then(embeddedObject => {
-			// 	if (embeddedObject instanceof Commando.FriendlyError) {
-			// 		return chan.send(embeddedObject.message);
-			// 	}
-			// 	return chan.send({embed: embeddedObject});
-			// });
+		channel.send(msg, {disableEveryone: true});
+		if (!lookup) {
+			return;
 		}
+		// return getCmdrInfoFromInara(member.displayName).then(embeddedObject => {
+		// 	if (embeddedObject instanceof Commando.FriendlyError) {
+		// 		return chan.send(embeddedObject.message);
+		// 	}
+		// 	return chan.send({embed: embeddedObject});
+		// });
 	}
 });
 
-client.on('guildMemberRemove',member => {
+client.on('guildMemberRemove', member => {
 	console.log(`\`${member.user.tag}\` left ${member.guild.name}`);
-	if (!client.provider.get(member.guild, 'botSpamLeave', false)) {
+	if (!client.provider.get(member.guild, 'logLeaves', false)) {
 		return;
 	}
-	let msg = client.provider.get(member.guild, 'botSpamLeaveMsg', '$USER left $SERVER');
-	msg = msg.replace('$USER', member.user.tag);
+	let msg = client.provider.get(
+		member.guild,
+		'logLeavesMsg',
+		'$TAG left $SERVER'
+	);
+	msg = msg.replace('$USER', member.toString());
 	msg = msg.replace('$SERVER', member.guild.name);
-	const channel = client.provider.get(member.guild, 'botSpam');
+	msg = msg.replace('$ID', member.id);
+	msg = msg.replace('$TAG', member.user.tag);
+	const channel = client.provider.get(member.guild, 'botLogChannelID');
 	if (channel) {
 		const chan = member.guild.channels.get(channel) as TextChannel;
 		if (chan) {

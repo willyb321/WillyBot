@@ -17,6 +17,7 @@ export class PurgeCommand extends Commando.Command {
 			group: 'admin',
 			memberName: 'purge',
 			description: 'Purge messages.',
+			guildOnly: true,
 			details: 'Purge messages.',
 			examples: ['purge 5'],
 
@@ -31,6 +32,9 @@ export class PurgeCommand extends Commando.Command {
 		});
 	}
 	hasPermission(message: Commando.CommandoMessage) {
+		if (!message.member) {
+			return false;
+		}
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 	async run(message: Commando.CommandoMessage, args) {

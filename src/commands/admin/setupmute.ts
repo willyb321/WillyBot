@@ -22,6 +22,9 @@ export class SetupMuteCommand extends Commando.Command {
 	}
 
 	hasPermission(message: Commando.CommandoMessage) {
+		if (!message.member) {
+			return false;
+		}
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 
