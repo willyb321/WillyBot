@@ -97,6 +97,31 @@ client.setProvider(new Commando.SyncSQLiteProvider(db)).catch((err: Error) => {
 	console.error(err);
 });
 
+client.on('guildCreate', guild => {
+	setTimeout(
+		() => {
+			let channelID: string;
+			let channels = guild.channels;
+			channelLoop: for (let c of channels) {
+				let channelType = c[1].type;
+				if (channelType === 'text') {
+					channelID = c[0];
+					break channelLoop;
+				}
+			}
+
+			let channel = guild.channels.get(
+				guild.systemChannelID || channelID
+			) as TextChannel;
+			channel.send(
+				`Hi, to set up this bot, please read ?help and use ?initguild`
+			);
+		},
+		10000,
+		guild
+	);
+});
+
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
 client.on('ready', () => {
