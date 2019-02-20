@@ -13,7 +13,7 @@ export const genEmbed = (title: string, desc: string): Discord.MessageEmbed =>
 	new Discord.MessageEmbed()
 		.setTitle(title)
 		.setAuthor(
-			'Another Bot',
+			config.botName,
 			'https://willb.info/images/2018/06/05/3d6d829d1cb595eccf43eca5638f2883.png'
 		)
 		.setDescription(desc)
@@ -129,11 +129,5 @@ export async function getInformationAboutSystem(input) {
 			);
 		}
 		return returnedEmbedObject;
-		/*return getEdsmApiResult(`get-comment?systemId=${encodeURIComponent(systeminfo.id)}&apiKey=${config.edsmKey}&commanderName=ctmbot`).then(comment => {
-				if (comment && comment.comment) {
-					consola.info(comment);
-					returnedEmbedObject.addField('__CTM Comment__', comment.comment);
-				}
-			});*/
 	}
 }

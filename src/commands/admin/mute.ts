@@ -5,10 +5,9 @@
  * ignore
  */
 import * as Commando from 'discord.js-commando';
-import {GuildChannel, Permissions, Role} from "discord.js";
-import { botLog } from '../../utils';
-const timestring = require('timestring')
-
+import {GuildChannel, Permissions, Role} from 'discord.js';
+import {botLog} from '../../utils';
+import * as timestring from 'timestring';
 
 export class MuteCommand extends Commando.Command {
 	constructor(client) {
@@ -46,7 +45,7 @@ export class MuteCommand extends Commando.Command {
 		let mutedRoleId = message.guild.settings.get('muteRole', '');
 		try {
 			mutedRole = message.guild.roles.get(mutedRoleId);
-		} catch(err) {
+		} catch (err) {
 			console.error(err);
 		}
 		if (args.user.roles.get(mutedRoleId)) {
@@ -69,11 +68,11 @@ export class MuteCommand extends Commando.Command {
 							console.error(err);
 						});
 				}, time);
-				return message.channel.send(`Muting ${args.user.toString()} for ${timestring(args.time, 'm')}mins`)
+				return message.channel.send(`Muting ${args.user.toString()} for ${timestring(args.time, 'm')}mins`);
 			})
 			.catch(err => {
 				console.error(err);
 				return botLog(`Muting ${args.user.toString()} failed`, message.guild);
 			});
-		}
+	}
 }

@@ -34,6 +34,9 @@ export class SetupLogCommand extends Commando.Command {
 		if (!message.member) {
 			return false;
 		}
+		if (message.client.isOwner(message.author)) {
+			return true;
+		}
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 

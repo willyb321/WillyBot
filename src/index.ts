@@ -1,4 +1,3 @@
-import {CommandoGuild} from 'discord.js-commando';
 /**
  * @module Index
  */
@@ -11,7 +10,7 @@ import * as Commando from 'discord.js-commando';
 import {config, db} from './utils';
 import {join} from 'path';
 import {oneLine} from 'common-tags';
-import {TextChannel, Guild} from 'discord.js';
+import {TextChannel} from 'discord.js';
 
 process.on('uncaughtException', (err: Error) => {
 	console.error(err);
@@ -24,15 +23,15 @@ process.on('unhandledRejection', (err: Error) => {
 // Create an instance of a Discord client
 export const client: Commando.CommandoClient = new Commando.Client({
 	owner: config.ownerID,
-	commandPrefix: '?',
-	unknownCommandResponse: false
+	commandPrefix: '?'
 });
 
 client
 	.on('error', console.error)
 	.on(
 		'debug',
-		process.env.NODE_ENV === 'development' ? console.info : () => {}
+		process.env.NODE_ENV === 'development' ? console.info : () => {
+		}
 	)
 	.on('warn', console.warn)
 	.on('disconnect', () => console.warn('Disconnected!'))
@@ -102,17 +101,20 @@ client.on('guildCreate', guild => {
 		() => {
 			let channelID: string;
 			let channels = guild.channels;
-			channelLoop: for (let c of channels) {
+			for (let c of channels) {
 				let channelType = c[1].type;
 				if (channelType === 'text') {
 					channelID = c[0];
-					break channelLoop;
+					break;
 				}
 			}
 
 			let channel = guild.channels.get(
 				guild.systemChannelID || channelID
 			) as TextChannel;
+			if (!channel) {
+				return;
+			}
 			channel.send(
 				`Hi, to set up this bot, please read ?help and use ?initguild`
 			);
@@ -128,10 +130,10 @@ client.on('ready', () => {
 	console.log(
 		`Client ready; logged in as ${client.user.username}#${
 			client.user.discriminator
-		} (${client.user.id})`
+			} (${client.user.id})`
 	);
 	client.user
-		.setActivity('Some sort of bot-like activity')
+		.setActivity('thonking')
 		.catch((err: Error) => {
 			console.error(err);
 		});
@@ -141,11 +143,13 @@ client.registry
 	.registerGroup('misc', 'Misc')
 	.registerGroup('admin', 'Admin')
 	.registerGroup('elite', 'Elite')
+	.registerGroup('nsfw', 'NSFW')
 	.registerDefaults()
 	.registerCommandsIn(join(__dirname, 'commands'))
 	.registerCommandsIn(join(__dirname, 'commands', 'admin'))
 	.registerCommandsIn(join(__dirname, 'commands', 'elite'))
-	.registerCommandsIn(join(__dirname, 'commands', 'misc'));
+	.registerCommandsIn(join(__dirname, 'commands', 'misc'))
+	.registerCommandsIn(join(__dirname, 'commands', 'nsfw'));
 
 // Log our bot in
 client.login(config.token).catch((err: Error) => {

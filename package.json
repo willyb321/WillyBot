@@ -19,17 +19,17 @@
     "discord.js": "github:discordjs/discord.js",
     "discord.js-commando": "github:discordjs/Commando",
     "erlpack": "github:hammerandchisel/erlpack",
-    "libsodium-wrappers": "^0.5.4",
+    "libsodium-wrappers": "^0.7.4",
     "lodash": "^4.17.10",
     "mathjs": "^5.4.1",
     "moment": "^2.24.0",
-    "nanoid": "^1.0.7",
+    "nanoid": "^2.0.1",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "source-map-support": "^0.5.6",
-    "sqlite": "^2.9.2",
+    "sqlite": "^3.0.2",
     "timestring": "^5.0.1",
-    "uws": "^10.148.1"
+    "uws": "^99.0.0"
   },
   "devDependencies": {
     "@types/async": "^2.0.49",
@@ -37,17 +37,20 @@
     "@types/common-tags": "^1.4.0",
     "@types/libsodium-wrappers": "^0.7.0",
     "@types/lodash": "^4.14.111",
+    "@types/mathjs": "^5.0.0",
     "@types/nanoid": "^1.2.0",
-    "@types/node": "^10.5.2",
+    "@types/node": "^11.9.4",
     "@types/raven": "^2.5.1",
+    "@types/request": "^2.48.1",
+    "@types/request-promise-native": "^1.0.15",
     "@types/source-map-support": "^0.4.1",
     "@types/uws": "^0.13.2",
-    "concurrently": "^3.6.0",
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.1",
     "tslint": "^5.10.0",
-    "tslint-xo": "^0.8.0",
-    "typedoc": "^0.11.1",
-    "typedoc-plugin-external-module-name": "^1.1.1",
-    "typescript": "^2.9.2"
+    "tslint-xo": "^0.14.0",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-external-module-name": "^2.0.0",
+    "typescript": "^3.3.3"
   }
 }

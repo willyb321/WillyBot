@@ -41,11 +41,14 @@ export class InitGuildCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(msg: Commando.CommandoMessage) {
-		if (!msg.member) {
+	hasPermission(message: Commando.CommandoMessage) {
+		if (!message.member) {
 			return false;
 		}
-		return msg.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
+		if (message.client.isOwner(message.author)) {
+			return true;
+		}
+		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 
 	async run(msg: Commando.CommandoMessage, args) {

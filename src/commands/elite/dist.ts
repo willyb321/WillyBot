@@ -64,7 +64,7 @@ export class DistCommand extends Commando.Command {
 			// writeLog(`Info for ${system2} looks OK, calculating distance`, 'EDSM SysDist');
 			system1coords = [system1info.coords.x, system1info.coords.y, system1info.coords.z];
 			system2coords = [system2info.coords.x, system2info.coords.y, system2info.coords.z];
-			const distance = mathjs.distance(system1coords, system2coords).toFixed(2);
+			const distance: any = mathjs.distance(system1coords, system2coords);
 			seconds = distance * 9.75 + 300;
 			const duration = moment.duration(seconds, 'seconds');
 			embed.setTitle(`Distance between \`${system1}\` and \`${system2}\``);
