@@ -48,7 +48,7 @@ client
 			);
 		}
 	)
-	.on('commandBlocked', (msg: Commando.CommandoMessage, reason: string) => {
+	.on('commandBlocked', (msg: Commando.CommandMessage, reason: string) => {
 		console.log(oneLine`
 			Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ''}
 			blocked; ${reason}
@@ -92,9 +92,12 @@ client
 		}
 	);
 
-client.setProvider(new Commando.SyncSQLiteProvider(db)).catch((err: Error) => {
-	console.error(err);
+db.then(db => {
+	client.setProvider(new Commando.SQLiteProvider(db)).catch((err: Error) => {
+		console.error(err);
+	});
 });
+
 
 client.on('guildCreate', guild => {
 	setTimeout(

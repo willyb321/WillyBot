@@ -41,7 +41,7 @@ export class InitGuildCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(message: Commando.CommandoMessage) {
+	hasPermission(message: Commando.CommandMessage) {
 		if (!message.member) {
 			return false;
 		}
@@ -51,7 +51,7 @@ export class InitGuildCommand extends Commando.Command {
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 
-	async run(msg: Commando.CommandoMessage, args) {
+	async run(msg: Commando.CommandMessage, args) {
 		const botLogID = args.botLogChannel.id;
 		const logJoins = args.logJoin;
 		const logLeaves = args.logLeave;

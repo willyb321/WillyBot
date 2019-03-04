@@ -20,10 +20,10 @@ export class RestartCommand extends Commando.Command {
 			examples: ['restart']
 		});
 	}
-	hasPermission(message: Commando.CommandoMessage) {
+	hasPermission(message: Commando.CommandMessage) {
 		return message.client.isOwner(message.author);
 	}
-	async run(message: Commando.CommandoMessage) {
+	async run(message: Commando.CommandMessage) {
 		console.log('Restarting');
 		await message.channel.send(':wave:');
 		client.destroy();

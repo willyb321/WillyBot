@@ -36,11 +36,11 @@ export class MuteCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(message: Commando.CommandoMessage) {
+	hasPermission(message: Commando.CommandMessage) {
 		return message.client.isOwner(message.author);
 	}
 
-	async run(message: Commando.CommandoMessage, args: any) {
+	async run(message: Commando.CommandMessage, args: any) {
 		let mutedRole: Role;
 		let mutedRoleId = message.guild.settings.get('muteRole', '');
 		try {
