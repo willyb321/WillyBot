@@ -30,11 +30,14 @@ export class Rule34Command extends Commando.Command {
 		});
 	}
 
-	hasPermission(message: Commando.CommandMessage) {
+	hasPermission(message: Commando.CommandoMessage) {
+		if (message && message.channel && message.channel) {
+
+		}
 		return true;
 	}
 
-	async run(message: Commando.CommandMessage, args: any) {
+	async run(message: Commando.CommandoMessage, args: any) {
 		const tag = args.tag;
 		const url = `https://e621.net/post/index.json`;
 		const params = {

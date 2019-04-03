@@ -21,7 +21,7 @@ export class SetupMuteCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(message: Commando.CommandMessage) {
+	hasPermission(message: Commando.CommandoMessage) {
 		if (!message.member) {
 			return false;
 		}
@@ -31,7 +31,7 @@ export class SetupMuteCommand extends Commando.Command {
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 
-	async run(message: Commando.CommandMessage) {
+	async run(message: Commando.CommandoMessage) {
 		const muteRoleId = await message.guild.settings.get('muteRole', '');
 		console.log(muteRoleId)
 		const perms = new Permissions();

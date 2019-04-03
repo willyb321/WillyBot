@@ -31,7 +31,7 @@ export class PurgeCommand extends Commando.Command {
 			]
 		});
 	}
-	hasPermission(message: Commando.CommandMessage) {
+	hasPermission(message: Commando.CommandoMessage) {
 		if (!message.member) {
 			return false;
 		}
@@ -40,7 +40,7 @@ export class PurgeCommand extends Commando.Command {
 		}
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
-	async run(message: Commando.CommandMessage, args) {
+	async run(message: Commando.CommandoMessage, args) {
 
 		let limit = args.amount;
 		if (!limit) {

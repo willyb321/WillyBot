@@ -20,11 +20,11 @@ export class FlipCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(msg: Commando.CommandMessage) {
+	hasPermission(msg: Commando.CommandoMessage) {
 		return true;
 	}
 
-	async run(msg: Commando.CommandMessage) {
+	async run(msg: Commando.CommandoMessage) {
 		const flipped = Math.floor(Math.random() * 2) == 0 ? 'heads' : 'tails';
 		console.log(`Coin flipped by ${msg.author.tag}: ${flipped}`);
 		const embed = genEmbed('Coin Flipped', `Result: ${flipped}`);

@@ -30,7 +30,7 @@ export class SetupLogCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(message: Commando.CommandMessage) {
+	hasPermission(message: Commando.CommandoMessage) {
 		if (!message.member) {
 			return false;
 		}
@@ -40,7 +40,7 @@ export class SetupLogCommand extends Commando.Command {
 		return message.member.hasPermission(Permissions.FLAGS.ADMINISTRATOR);
 	}
 
-	async run(message: Commando.CommandMessage, args) {
+	async run(message: Commando.CommandoMessage, args) {
 		const botLogID = args.channel.id;
 		await message.guild.settings.set('botLogChannelID', botLogID);
 		return botLog(`Now logging in this channel`, message.guild);

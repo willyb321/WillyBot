@@ -48,7 +48,7 @@ client
 			);
 		}
 	)
-	.on('commandBlocked', (msg: Commando.CommandMessage, reason: string) => {
+	.on('commandBlocked', (msg: Commando.CommandoMessage, reason: string) => {
 		console.log(oneLine`
 			Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ''}
 			blocked; ${reason}
@@ -147,12 +147,14 @@ client.registry
 	.registerGroup('admin', 'Admin')
 	.registerGroup('elite', 'Elite')
 	.registerGroup('nsfw', 'NSFW')
+	.registerGroup('selfmod', 'SelfMod')
 	.registerDefaults()
 	.registerCommandsIn(join(__dirname, 'commands'))
 	.registerCommandsIn(join(__dirname, 'commands', 'admin'))
 	.registerCommandsIn(join(__dirname, 'commands', 'elite'))
 	.registerCommandsIn(join(__dirname, 'commands', 'misc'))
-	.registerCommandsIn(join(__dirname, 'commands', 'nsfw'));
+	.registerCommandsIn(join(__dirname, 'commands', 'nsfw'))
+	.registerCommandsIn(join(__dirname, 'commands', 'selfmod'));
 
 // Log our bot in
 client.login(config.token).catch((err: Error) => {

@@ -38,11 +38,11 @@ export class DistCommand extends Commando.Command {
 		});
 	}
 
-	hasPermission(msg: Commando.CommandMessage) {
+	hasPermission(msg: Commando.CommandoMessage) {
 		return true;
 	}
 
-	async run(msg: Commando.CommandMessage, args: any) {
+	async run(msg: Commando.CommandoMessage, args: any) {
 		const embed = genEmbed('Distance Between', `${args.sys1} & ${args.sys2}`);
 		let seconds;
 		const system1 = args.sys1;
