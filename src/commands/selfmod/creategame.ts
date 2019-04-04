@@ -29,7 +29,7 @@ export class CreateGameCommand extends Commando.Command {
 	}
 
 	hasPermission(msg: Commando.CommandoMessage) {
-		return message.client.isOwner(message.author);
+		return msg.client.isOwner(msg.author);
 	}
 
 	async run(msg: Commando.CommandoMessage, args: any) {
